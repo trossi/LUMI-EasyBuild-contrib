@@ -1,0 +1,15 @@
+Source of the patch:
+https://github.com/cupy/cupy/pull/8335/commits/175b4b0f1128b2d2c72e99da11a7bd42b82811c5
+--- a/cupy_backends/hip/cupy_hip_runtime.h
++++ b/cupy_backends/hip/cupy_hip_runtime.h
+@@ -281,6 +281,9 @@ cudaError_t cudaPointerGetAttributes(cudaPointerAttributes *attributes,
+                 /* we don't care the rest of possibilities */
+                 return status;
+         }
++    } else if (status == cudaErrorInvalidValue) {
++        attributes->memoryType = (hipMemoryType)0; /* cudaMemoryTypeUnregistered */
++        return cudaSuccess;
+     } else {
+         return status;
+     }
+
